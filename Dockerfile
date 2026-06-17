@@ -6,9 +6,8 @@ WORKDIR /app
 RUN apt-get update \
     && pip install --upgrade pip \
     && pip3 install --user --no-cache-dir \
-        "asreview>=2,<3" \
-        gunicorn \
-	asreview-dory
+        "asreview>=3,<4" \
+        gunicorn
         
 # Second stage
 FROM python:3.11-slim
