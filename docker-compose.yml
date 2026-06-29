@@ -8,7 +8,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_DB=${POSTGRES_DB}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}"]
+      test: [ "CMD-SHELL", "pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -16,7 +16,7 @@ services:
       - database-volume:/var/lib/postgresql/data
 
   asreview:
-    build: .
+    image: ghcr.io/darrenkjr/asreview_pmosguideline2028:latest
     restart: always
     depends_on:
       database:
@@ -34,9 +34,7 @@ services:
       - 127.0.0.1:${BACKEND_EXTERNAL_PORT}:5006
     entrypoint: []
     command: >
-      bash -c "asreview auth-tool create-db
-      && (asreview task-manager
-      & gunicorn -w ${WORKERS} -b \"0.0.0.0:5006\" \"asreview.webapp.app:create_app()\")"
+      bash -c "asreview auth-tool create-db && (asreview task-manager & gunicorn -w ${WORKERS} -b \"0.0.0.0:5006\" \"asreview.webapp.app:create_app()\")"
 
   server:
     image: nginx:1.27
